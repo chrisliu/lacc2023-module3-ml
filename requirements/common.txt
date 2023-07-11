@@ -1,3 +1,8 @@
 notebook
+
+# ipycanvas breaks later version of tornado.
+ipycanvas==0.11
 tornado==6.1
-RISE
+
+# RISE presentation support.
+RISE 
