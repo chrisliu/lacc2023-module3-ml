@@ -13,6 +13,23 @@ first.
 chmod u+x install-dev.sh && ./install-dev.sh
 ```
 
+### Presenting from Jupyter Notebook
+
+Once the environmennt is set up, you can launch Jupyter notebook
+
+```bash
+jupyter notebook
+```
+
+In Jupyter notebook, go to `View`>`Cell Toolbar` and select `Slideshow`. This
+allows you to set the type of the slide.
+
+`Option`/`Alt`+`R` enters presentation mode. Alternatively, you can click the
+graph icon on the rightmost of the toolbar containing `Run`.
+
+The basics of RISE is described in
+[their documentation](https://rise.readthedocs.io/en/stable/usage.html).
+
 ### Git Basics
 
 1. Add all changes that have been made.
