@@ -1,0 +1,27 @@
+---
+repos:
+    - repo: https://github.com/srstevenson/nb-clean
+      rev: 2.4.0
+      hooks:
+          - id: nb-clean
+            name: Clean Jupyter notebooks
+            args:
+                - --remove-empty-cells
+                - --preserve-cell-metadata
+                - tags
+                - slideshow
+    - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+      rev: 0.2.1
+      hooks:
+          - id: yamlfmt
+            name: Format YAML files
+    - repo: https://github.com/executablebooks/mdformat
+      rev: 0.7.16
+      hooks:
+          - id: mdformat
+            name: Format Markdown files
+            args:
+                - --wrap=80
+            additional_dependencies:
+                - mdformat-gfm
+                - mdformat-black
