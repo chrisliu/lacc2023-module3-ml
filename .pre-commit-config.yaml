@@ -1,15 +1,10 @@
 ---
 repos:
-    - repo: https://github.com/srstevenson/nb-clean
-      rev: 2.4.0
+    - repo: https://github.com/kynan/nbstripout
+      rev: 0.6.1
       hooks:
-          - id: nb-clean
+          - id: nbstripout
             name: Clean Jupyter notebooks
-            args:
-                - --remove-empty-cells
-                - --preserve-cell-metadata
-                - tags
-                - slideshow
     - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
       rev: 0.2.1
       hooks:
@@ -25,3 +20,10 @@ repos:
             additional_dependencies:
                 - mdformat-gfm
                 - mdformat-black
+    - repo: https://github.com/omnilib/ufmt
+      rev: v2.0.0
+      hooks:
+          - id: ufmt
+            additional_dependencies:
+                - black == 22.6.0
+                - usort == 1.0.4
