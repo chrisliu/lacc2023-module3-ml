@@ -169,9 +169,6 @@ def middle_state(n):
     state = np.array(state).reshape(n, n)
     return SlidingTile(n, state)
 
-puzzle = middle_state(3)
-puzzle.print_actions('rdul')
-
 def generate_valid_sliding_tile(n):
     ''' Generates a valid sliding tile puzzle given the size of the puzzle
         n: the number of rows and columns in the puzzle
