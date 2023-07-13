@@ -11,6 +11,15 @@ class Maze(enum.Enum):
     FLOOR = " "
     EXPLORED = "E"
 
+    def __eq__(self, other):
+        if isinstance(other, Maze):
+            return super().__eq__(other)
+        else:
+            return self.value == other
+
+    def __hash__(self):
+        return super().__hash__()
+
 
 class Direction(enum.Enum):
     UP = enum.auto()
@@ -31,7 +40,7 @@ class MazeBoard(Board):
         super().__init__(board)
 
         self.me = self.start
-        self._explored = set()
+        self.explored = set()
         self._breadcrumbs = list()
 
         self._highlights = set()
@@ -39,7 +48,7 @@ class MazeBoard(Board):
     def __deepcopy__(self, memo):
         cpy = MazeBoard(copy.deepcopy(self.data, memo))
         cpy.me = copy.deepcopy(self.me, memo)
-        cpy._explored = copy.deepcopy(self._explored, memo)
+        cpy.explored = copy.deepcopy(self.explored, memo)
         cpy._breadcrumbs = copy.deepcopy(self._breadcrumbs, memo)
         cpy._highlights = copy.deepcopy(self._highlights, memo)
         cpy._snapshots = self._snapshots
@@ -69,25 +78,22 @@ class MazeBoard(Board):
     def breadcrumbs(self):
         return self._breadcrumbs
 
-    @property
-    def explored(self):
-        return self._explored
-
     def reset(self):
         super().reset()
         self.me = self.start
         self._breadcrumbs.clear()
-        self._explored.clear()
+        self.explored.clear()
         self._highlights.clear()
+        self._snapshots.clear()
 
     def explore(self, pos):
-        self._explored.add(pos)
+        self.explored.add(pos)
 
     def move(self, direction):
         self.me = self.to_my(direction)
 
     def have_we_explored(self, pos):
-        return pos in self._explored
+        return pos in self.explored
 
     def drop_breadcrumb(self):
         self._breadcrumbs.append(self.me)
@@ -112,3 +118,6 @@ class MazeBoard(Board):
 
     def clear_highlights(self):
         self._highlights.clear()
+
+    def _repr_pretty_(self, p, cycle):
+        p.pretty([[c.value for c in row] for row in self])

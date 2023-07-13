@@ -112,12 +112,12 @@ def _draw_maze_new_canvas(maze, grid_px, debug, only_visible):
     return canvas
 
 
-def draw_maze(maze, grid_px=60, debug=False, only_visible=False):
+def draw_maze(maze, grid_px=60, debug=True, only_visible=False):
     canvas = _draw_maze_new_canvas(maze, grid_px, debug, only_visible)
     display(canvas)
 
 
-def animate_maze(maze, grid_px=60, debug=False, only_visible=False):
+def animate_maze(maze, grid_px=60, debug=True, only_visible=False):
     play = widgets.Play(
         value=0, min=0, max=len(maze.snapshots) - 1, interval=250, disabled=False
     )
