@@ -2,9 +2,6 @@ import random
 import numpy as np
 from time import sleep
 from IPython.display import display, clear_output, HTML
-from google.colab import output
-output.enable_custom_widget_manager()
-from ipycanvas import Canvas, hold_canvas
 
 import heapq
 

@@ -6,6 +6,6 @@ setup(
    description='LACC Module 3',
    author='Dylan Kupsh and Chris Liu',
    author_email='dkupsh@cs.ucla.edu, c',
-   packages=find_packages(),
+   package_dir={'lacc': 'lacc'},
    install_requires=[], #external packages as dependencies
 )
