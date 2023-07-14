@@ -55,6 +55,13 @@ class SlidingTile:
     def __len__(self):
         return len(self.puzzle)
 
+    def __eq__(self, other):
+        for i in range(len(self.puzzle)):
+            for j in range(len(self.puzzle)):
+                if self.puzzle[i][j] != other[i][j]:
+                    return False
+        return True
+
     @property
     def shape(self):
         return (len(self.puzzle), len(self.puzzle[0]))
