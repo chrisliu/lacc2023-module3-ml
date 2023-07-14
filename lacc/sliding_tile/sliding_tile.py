@@ -58,7 +58,7 @@ class SlidingTile:
     def __eq__(self, other):
         for i in range(len(self.puzzle)):
             for j in range(len(self.puzzle)):
-                if self.puzzle[i][j] != other[i][j]:
+                if self[i][j] != other[i][j]:
                     return False
         return True
 
