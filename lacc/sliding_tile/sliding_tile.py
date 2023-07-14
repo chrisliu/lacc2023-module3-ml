@@ -256,33 +256,38 @@ def generate_valid_sliding_tile(n):
 
     return SlidingTile(n, puzzle)
 
+
 def HeuristicSearch(puzzle, heuristic):
     def slide_up(curr_puzzle):
         new_puzzle = curr_puzzle.copy()
         x_blank_tile, y_blank_tile = puzzle.blank_tile()
         if x_blank_tile == 0:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile - 1][y_blank_tile]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile - 1][
+            y_blank_tile
+        ]
         new_puzzle[x_blank_tile - 1][y_blank_tile] = 0
         return new_puzzle
-
 
     def slide_down(curr_puzzle):
         new_puzzle = curr_puzzle.copy()
         x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
         if x_blank_tile == curr_puzzle.shape[1] - 1:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile + 1][y_blank_tile]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile + 1][
+            y_blank_tile
+        ]
         new_puzzle[x_blank_tile + 1][y_blank_tile] = 0
         return new_puzzle
-
 
     def slide_left(curr_puzzle):
         new_puzzle = curr_puzzle.copy()
         x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
         if y_blank_tile == 0:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][y_blank_tile - 1]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][
+            y_blank_tile - 1
+        ]
         new_puzzle[x_blank_tile][y_blank_tile - 1] = 0
         return new_puzzle
 
@@ -291,10 +296,12 @@ def HeuristicSearch(puzzle, heuristic):
         x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
         if y_blank_tile == puzzle.shape[0] - 1:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][y_blank_tile + 1]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][
+            y_blank_tile + 1
+        ]
         new_puzzle[x_blank_tile][y_blank_tile + 1] = 0
         return new_puzzle
-    
+
     def check_solved(puzzle):
         return puzzle == goal_state(puzzle.shape[0])
 
@@ -329,25 +336,32 @@ def HeuristicSearch(puzzle, heuristic):
         # Add the puzzle's children to the to_visit queue
         up = slide_up(current_puzzle)
         if up is not False:
-            new_path = current_path + ('U',)
+            new_path = current_path + ("U",)
             heapq.heappush(to_visit, [heuristic(up), -1 * num_expanded, new_path, up])
 
         down = slide_down(current_puzzle)
         if down is not False:
-            new_path = current_path + ('D',)
-            heapq.heappush(to_visit, [heuristic(down), -1 * num_expanded, new_path, down])
+            new_path = current_path + ("D",)
+            heapq.heappush(
+                to_visit, [heuristic(down), -1 * num_expanded, new_path, down]
+            )
 
         left = slide_left(current_puzzle)
         if left is not False:
-            new_path = current_path + ('L',)
-            heapq.heappush(to_visit, [heuristic(left), -1 * num_expanded, new_path, left])
+            new_path = current_path + ("L",)
+            heapq.heappush(
+                to_visit, [heuristic(left), -1 * num_expanded, new_path, left]
+            )
 
         right = slide_right(current_puzzle)
         if right is not False:
-            new_path = current_path + ('R',)
-            heapq.heappush(to_visit, [heuristic(right), -1 * num_expanded, new_path, right])
+            new_path = current_path + ("R",)
+            heapq.heappush(
+                to_visit, [heuristic(right), -1 * num_expanded, new_path, right]
+            )
 
     raise ValueError("No solution found")
+
 
 def AStarSearch(puzzle, heuristic):
     def slide_up(curr_puzzle):
@@ -355,27 +369,31 @@ def AStarSearch(puzzle, heuristic):
         x_blank_tile, y_blank_tile = puzzle.blank_tile()
         if x_blank_tile == 0:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile - 1][y_blank_tile]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile - 1][
+            y_blank_tile
+        ]
         new_puzzle[x_blank_tile - 1][y_blank_tile] = 0
         return new_puzzle
-
 
     def slide_down(curr_puzzle):
         new_puzzle = curr_puzzle.copy()
         x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
         if x_blank_tile == curr_puzzle.shape[1] - 1:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile + 1][y_blank_tile]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile + 1][
+            y_blank_tile
+        ]
         new_puzzle[x_blank_tile + 1][y_blank_tile] = 0
         return new_puzzle
-
 
     def slide_left(curr_puzzle):
         new_puzzle = curr_puzzle.copy()
         x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
         if y_blank_tile == 0:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][y_blank_tile - 1]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][
+            y_blank_tile - 1
+        ]
         new_puzzle[x_blank_tile][y_blank_tile - 1] = 0
         return new_puzzle
 
@@ -384,10 +402,12 @@ def AStarSearch(puzzle, heuristic):
         x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
         if y_blank_tile == puzzle.shape[0] - 1:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][y_blank_tile + 1]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][
+            y_blank_tile + 1
+        ]
         new_puzzle[x_blank_tile][y_blank_tile + 1] = 0
         return new_puzzle
-    
+
     def check_solved(puzzle):
         return puzzle == goal_state(puzzle.shape[0])
 
@@ -422,22 +442,34 @@ def AStarSearch(puzzle, heuristic):
         # Add the puzzle's children to the to_visit queue
         up = slide_up(current_puzzle)
         if up is not False:
-            new_path = current_path + ('U',)
-            heapq.heappush(to_visit, [heuristic(up) + len(new_path), -1 * num_expanded, new_path, up])
+            new_path = current_path + ("U",)
+            heapq.heappush(
+                to_visit,
+                [heuristic(up) + len(new_path), -1 * num_expanded, new_path, up],
+            )
 
         down = slide_down(current_puzzle)
         if down is not False:
-            new_path = current_path + ('D',)
-            heapq.heappush(to_visit, [heuristic(down) + len(new_path), -1 * num_expanded, new_path, down])
+            new_path = current_path + ("D",)
+            heapq.heappush(
+                to_visit,
+                [heuristic(down) + len(new_path), -1 * num_expanded, new_path, down],
+            )
 
         left = slide_left(current_puzzle)
         if left is not False:
-            new_path = current_path + ('L',)
-            heapq.heappush(to_visit, [heuristic(left) + len(new_path), -1 * num_expanded, new_path, left])
+            new_path = current_path + ("L",)
+            heapq.heappush(
+                to_visit,
+                [heuristic(left) + len(new_path), -1 * num_expanded, new_path, left],
+            )
 
         right = slide_right(current_puzzle)
         if right is not False:
-            new_path = current_path + ('R',)
-            heapq.heappush(to_visit, [heuristic(right) + len(new_path), -1 * num_expanded, new_path, right])
+            new_path = current_path + ("R",)
+            heapq.heappush(
+                to_visit,
+                [heuristic(right) + len(new_path), -1 * num_expanded, new_path, right],
+            )
 
     raise ValueError("No solution found")
