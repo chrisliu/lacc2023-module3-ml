@@ -1,7 +1,7 @@
 import copy
 import enum
 
-from lacc.module3.board import Board
+from lacc.board import Board
 
 
 class Maze(enum.Enum):

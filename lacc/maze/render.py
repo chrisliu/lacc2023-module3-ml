@@ -4,8 +4,8 @@ import math
 from ipycanvas import Canvas, hold_canvas
 from ipywidgets import widgets
 
-from lacc.module3.maze import Maze
-from lacc.module3.render import star_coords
+from lacc.maze import Maze
+from lacc.render import star_coords
 
 
 def _get_offset(grid_px, debug):
