@@ -115,6 +115,7 @@ def _draw_maze_new_canvas(maze, grid_px, debug, only_visible):
 def draw_maze(maze, grid_px=60, debug=True, only_visible=False):
     canvas = _draw_maze_new_canvas(maze, grid_px, debug, only_visible)
     display(canvas)
+    return canvas
 
 
 def animate_maze(maze, grid_px=60, debug=True, only_visible=False):
@@ -162,3 +163,4 @@ def animate_maze(maze, grid_px=60, debug=True, only_visible=False):
     render = widgets.Box([canvas], layout=widgets.Layout(width=f"{canvas.width}px"))
     view = widgets.VBox([render, control])
     display(view)
+    return view
