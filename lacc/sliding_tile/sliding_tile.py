@@ -257,48 +257,48 @@ def generate_valid_sliding_tile(n):
     return SlidingTile(n, puzzle)
 
 def AStarSearch(puzzle, heuristic):
-    def slide_up(puzzle):
-        new_puzzle = puzzle.copy()
+    def slide_up(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
         x_blank_tile, y_blank_tile = puzzle.blank_tile()
         if x_blank_tile == 0:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = puzzle[x_blank_tile - 1][y_blank_tile]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile - 1][y_blank_tile]
         new_puzzle[x_blank_tile - 1][y_blank_tile] = 0
         return new_puzzle
 
 
-    def slide_down(puzzle):
-        new_puzzle = puzzle.copy()
-        x_blank_tile, y_blank_tile = puzzle.blank_tile()
-        if x_blank_tile == puzzle.shape[1] - 1:
+    def slide_down(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
+        if x_blank_tile == curr_puzzle.shape[1] - 1:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = puzzle[x_blank_tile + 1][y_blank_tile]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile + 1][y_blank_tile]
         new_puzzle[x_blank_tile + 1][y_blank_tile] = 0
         return new_puzzle
 
 
-    def slide_left(puzzle):
-        new_puzzle = puzzle.copy()
-        x_blank_tile, y_blank_tile = puzzle.blank_tile()
+    def slide_left(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
         if y_blank_tile == 0:
             return False
-        puzzle[x_blank_tile][y_blank_tile] = puzzle[x_blank_tile][y_blank_tile - 1]
-        puzzle[x_blank_tile][y_blank_tile - 1] = 0
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][y_blank_tile - 1]
+        new_puzzle[x_blank_tile][y_blank_tile - 1] = 0
         return new_puzzle
 
-    def slide_right(puzzle):
-        new_puzzle = puzzle.copy()
-        x_blank_tile, y_blank_tile = puzzle.blank_tile()
+    def slide_right(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
         if y_blank_tile == puzzle.shape[0] - 1:
             return False
-        new_puzzle[x_blank_tile][y_blank_tile] = puzzle[x_blank_tile][y_blank_tile + 1]
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][y_blank_tile + 1]
         new_puzzle[x_blank_tile][y_blank_tile + 1] = 0
         return new_puzzle
     
     def check_solved(puzzle):
         return puzzle == goal_state(puzzle.shape[0])
 
-    seen = []
+    seen_puzzles = []
 
     # First create the heap
     to_visit = []
@@ -312,9 +312,12 @@ def AStarSearch(puzzle, heuristic):
         # Get the current state of the puzzle
         _, _, current_path, current_puzzle = heapq.heappop(to_visit)
 
-        # Check to see if the puzzle has been previously visited
-        if current_puzzle in seen:
+        # Check to see if we've already seen this puzzle
+        if current_puzzle in seen_puzzles:
             continue
+
+        # As we haven't seen this puzzle, let's add it to the list of seen states
+        seen_puzzles.append(current_puzzle)
 
         # Check to see if the puzzle is solved
         if check_solved(current_puzzle):
@@ -322,9 +325,6 @@ def AStarSearch(puzzle, heuristic):
 
         # count the number of expanded nodes that we have visited
         num_expanded += 1
-
-        # Add the puzzle to the seen set
-        seen.append(current_puzzle)
 
         # Add the puzzle's children to the to_visit queue
         up = slide_up(current_puzzle)
