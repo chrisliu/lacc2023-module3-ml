@@ -55,6 +55,13 @@ class SlidingTile:
     def __len__(self):
         return len(self.puzzle)
 
+    def __eq__(self, other):
+        for i in range(len(self.puzzle)):
+            for j in range(len(self.puzzle)):
+                if self[i][j] != other[i][j]:
+                    return False
+        return True
+
     @property
     def shape(self):
         return (len(self.puzzle), len(self.puzzle[0]))
@@ -248,3 +255,189 @@ def generate_valid_sliding_tile(n):
         puzzle = generate_random_sliding_tile(n)
 
     return SlidingTile(n, puzzle)
+
+def HeuristicSearch(puzzle, heuristic):
+    def slide_up(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = puzzle.blank_tile()
+        if x_blank_tile == 0:
+            return False
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile - 1][y_blank_tile]
+        new_puzzle[x_blank_tile - 1][y_blank_tile] = 0
+        return new_puzzle
+
+
+    def slide_down(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
+        if x_blank_tile == curr_puzzle.shape[1] - 1:
+            return False
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile + 1][y_blank_tile]
+        new_puzzle[x_blank_tile + 1][y_blank_tile] = 0
+        return new_puzzle
+
+
+    def slide_left(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
+        if y_blank_tile == 0:
+            return False
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][y_blank_tile - 1]
+        new_puzzle[x_blank_tile][y_blank_tile - 1] = 0
+        return new_puzzle
+
+    def slide_right(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
+        if y_blank_tile == puzzle.shape[0] - 1:
+            return False
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][y_blank_tile + 1]
+        new_puzzle[x_blank_tile][y_blank_tile + 1] = 0
+        return new_puzzle
+    
+    def check_solved(puzzle):
+        return puzzle == goal_state(puzzle.shape[0])
+
+    seen_puzzles = []
+
+    # First create the heap
+    to_visit = []
+    heapq.heapify(to_visit)
+
+    # Add our initial state
+    heapq.heappush(to_visit, [0, 0, (), puzzle])
+
+    num_expanded = 0
+    while len(to_visit) > 0:
+        # Get the current state of the puzzle
+        _, _, current_path, current_puzzle = heapq.heappop(to_visit)
+
+        # Check to see if we've already seen this puzzle
+        if current_puzzle in seen_puzzles:
+            continue
+
+        # As we haven't seen this puzzle, let's add it to the list of seen states
+        seen_puzzles.append(current_puzzle)
+
+        # Check to see if the puzzle is solved
+        if check_solved(current_puzzle):
+            return current_path, num_expanded
+
+        # count the number of expanded nodes that we have visited
+        num_expanded += 1
+
+        # Add the puzzle's children to the to_visit queue
+        up = slide_up(current_puzzle)
+        if up is not False:
+            new_path = current_path + ('U',)
+            heapq.heappush(to_visit, [heuristic(up), -1 * num_expanded, new_path, up])
+
+        down = slide_down(current_puzzle)
+        if down is not False:
+            new_path = current_path + ('D',)
+            heapq.heappush(to_visit, [heuristic(down), -1 * num_expanded, new_path, down])
+
+        left = slide_left(current_puzzle)
+        if left is not False:
+            new_path = current_path + ('L',)
+            heapq.heappush(to_visit, [heuristic(left), -1 * num_expanded, new_path, left])
+
+        right = slide_right(current_puzzle)
+        if right is not False:
+            new_path = current_path + ('R',)
+            heapq.heappush(to_visit, [heuristic(right), -1 * num_expanded, new_path, right])
+
+    raise ValueError("No solution found")
+
+def AStarSearch(puzzle, heuristic):
+    def slide_up(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = puzzle.blank_tile()
+        if x_blank_tile == 0:
+            return False
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile - 1][y_blank_tile]
+        new_puzzle[x_blank_tile - 1][y_blank_tile] = 0
+        return new_puzzle
+
+
+    def slide_down(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
+        if x_blank_tile == curr_puzzle.shape[1] - 1:
+            return False
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile + 1][y_blank_tile]
+        new_puzzle[x_blank_tile + 1][y_blank_tile] = 0
+        return new_puzzle
+
+
+    def slide_left(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
+        if y_blank_tile == 0:
+            return False
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][y_blank_tile - 1]
+        new_puzzle[x_blank_tile][y_blank_tile - 1] = 0
+        return new_puzzle
+
+    def slide_right(curr_puzzle):
+        new_puzzle = curr_puzzle.copy()
+        x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
+        if y_blank_tile == puzzle.shape[0] - 1:
+            return False
+        new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile][y_blank_tile + 1]
+        new_puzzle[x_blank_tile][y_blank_tile + 1] = 0
+        return new_puzzle
+    
+    def check_solved(puzzle):
+        return puzzle == goal_state(puzzle.shape[0])
+
+    seen_puzzles = []
+
+    # First create the heap
+    to_visit = []
+    heapq.heapify(to_visit)
+
+    # Add our initial state
+    heapq.heappush(to_visit, [0, 0, (), puzzle])
+
+    num_expanded = 0
+    while len(to_visit) > 0:
+        # Get the current state of the puzzle
+        _, _, current_path, current_puzzle = heapq.heappop(to_visit)
+
+        # Check to see if we've already seen this puzzle
+        if current_puzzle in seen_puzzles:
+            continue
+
+        # As we haven't seen this puzzle, let's add it to the list of seen states
+        seen_puzzles.append(current_puzzle)
+
+        # Check to see if the puzzle is solved
+        if check_solved(current_puzzle):
+            return current_path, num_expanded
+
+        # count the number of expanded nodes that we have visited
+        num_expanded += 1
+
+        # Add the puzzle's children to the to_visit queue
+        up = slide_up(current_puzzle)
+        if up is not False:
+            new_path = current_path + ('U',)
+            heapq.heappush(to_visit, [heuristic(up) + len(new_path), -1 * num_expanded, new_path, up])
+
+        down = slide_down(current_puzzle)
+        if down is not False:
+            new_path = current_path + ('D',)
+            heapq.heappush(to_visit, [heuristic(down) + len(new_path), -1 * num_expanded, new_path, down])
+
+        left = slide_left(current_puzzle)
+        if left is not False:
+            new_path = current_path + ('L',)
+            heapq.heappush(to_visit, [heuristic(left) + len(new_path), -1 * num_expanded, new_path, left])
+
+        right = slide_right(current_puzzle)
+        if right is not False:
+            new_path = current_path + ('R',)
+            heapq.heappush(to_visit, [heuristic(right) + len(new_path), -1 * num_expanded, new_path, right])
+
+    raise ValueError("No solution found")
