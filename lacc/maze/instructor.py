@@ -1,4 +1,4 @@
-from lacc.maze import DOWN, LEFT, Maze, RIGHT, UP
+from lacc.maze.maze import DOWN, LEFT, Maze, RIGHT, UP
 
 
 def can_explore(maze, direction):
