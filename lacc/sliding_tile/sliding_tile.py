@@ -366,7 +366,7 @@ def HeuristicSearch(puzzle, heuristic):
 def AStarSearch(puzzle, heuristic):
     def slide_up(curr_puzzle):
         new_puzzle = curr_puzzle.copy()
-        x_blank_tile, y_blank_tile = puzzle.blank_tile()
+        x_blank_tile, y_blank_tile = curr_puzzle.blank_tile()
         if x_blank_tile == 0:
             return False
         new_puzzle[x_blank_tile][y_blank_tile] = curr_puzzle[x_blank_tile - 1][
