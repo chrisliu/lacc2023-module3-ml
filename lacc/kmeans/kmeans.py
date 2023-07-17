@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 from sklearn.datasets._samples_generator import make_blobs
 from sklearn.datasets._samples_generator import make_moons
 
-np.random.seed(42)
-
 def plot_clusters(data, labels, num_clusters, cluster_centers):
   listOfClusterColors = ['blue', 'green', 'magenta', 'brown', 'orange']
 
@@ -27,7 +25,7 @@ def plot_clusters(data, labels, num_clusters, cluster_centers):
     plt.scatter([x for x, _ in cluster_centers], [y for _, y in cluster_centers], marker='+', c='black', s=200)
 
 
-def plot_test_point(X, centers, numpy=False):
+def plot_test_point(X, centers):
   random_point = [random.uniform(min(X[:, 0]), max(X[:, 0])),
                   random.uniform(min(X[:, 1]), max(X[:, 1]))]
 
@@ -37,10 +35,6 @@ def plot_test_point(X, centers, numpy=False):
 
   plt.scatter(random_point[0], random_point[1], marker='*', color='red', s=200)
   plt.plot([random_point[0], best_centroid[0]], [random_point[1], best_centroid[1]], 'b-')
-
-
-#Take out numpy
-#Break each numpy function into is own function
 
 class KMeans_KEY:
     def __init__(self, n_clusters=3, max_iter=100):

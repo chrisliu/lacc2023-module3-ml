@@ -8,6 +8,5 @@ setup(
     author_email="dkupsh@cs.ucla.edu, c",
     package_dir={"lacc": "lacc"},
     install_requires=[
-        "ipycanvas==0.11",
     ],  # external packages as dependencies
 )
