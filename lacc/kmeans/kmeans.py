@@ -3,8 +3,6 @@ import random
 import numpy as np
 from numpy.random import uniform
 import matplotlib.pyplot as plt
-from sklearn.datasets._samples_generator import make_blobs
-from sklearn.datasets._samples_generator import make_moons
 
 def plot_clusters(data, labels, num_clusters, cluster_centers):
   listOfClusterColors = ['blue', 'green', 'magenta', 'brown', 'orange']
